@@ -1,0 +1,29 @@
+#!/usr/bin/env ruby
+
+def a_Z0_9
+ ('a'..'z').to_a +
+ ('A'..'Z').to_a +
+ ('0'..'9').to_a +
+ ["-", "_"]
+end 
+
+xs = a_Z0_9
+
+def iter(xs, prefixes, i)
+  return prefixes if i > 12 
+  puts "#{i}/#{13}\r"
+  iter(a_Z0_9, [prefixes].flatten.map {|prefix| xs.map {|x| "#{prefix}#{x}" }}, i + 1)
+rescue Interrupt
+  prefixes
+end
+
+def brute_force
+  network_name = "aaa"
+  [iter(a_Z0_9, "", 0)].flatten.each do |password|
+    puts "networksetup -setairportnetwork en0 #{network_name} #{password}"    	
+  end
+rescue Interrupt  
+  puts "\n\nお疲れ\n\n\n"
+end  
+
+brute_force
